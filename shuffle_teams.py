@@ -18,7 +18,7 @@ def split_array(array, team_size):
     for i in range(0, int(len(array)/(2*team_size))):
         team = []
         for j in range(0,2):
-            team.append(array[(i*4)+(j*2):(i*4)+(j*2)+2])
+            team.append(array[(i*team_size*2)+(j*team_size):(i*team_size*2)+(j*team_size)+team_size])
         game.append(team)
     return game
 
@@ -29,9 +29,9 @@ def shuffle_teams():
   participants=list(range(1, n_part+1))
 
   random.shuffle(participants)
-  print(participants)
+  print("shuffled team: ",  participants)
   round1=split_array(participants, team_size)
-  print(round1)
+  print("first round of games: ", round1)
 
 
 if __name__ == "__main__":
