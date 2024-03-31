@@ -21,9 +21,26 @@ def split_array(array, team_size):
 
     for i in range(0, int(len(array)/(2*team_size))):
         team = []
-        for j in range(0,2):
+        for j in range(0,team_size):
             team.append(array[(i*team_size*2)+(j*team_size):(i*team_size*2)+(j*team_size)+team_size])
+
+        #add the player index to the list of players each player has played with
+        #print("Team: ", team)
+
         game.append(team)
+
+    # add the third element in  players_dict that represents who this player has played with
+    # go team by team
+    for g in game:
+        for team in g: # should always be 2?
+            print("Team     :", team)
+            for k in range(team_size): # go player by player
+                for l in range(k+1, team_size): #but start in the next one
+                    print("Team member: ", team[k])
+                    print("Team member: ", team[l])
+                    players_dict[team[k]][2].append(team[l])
+                    players_dict[team[l]][2].append(team[k])
+
     return game
 
 def init_teams(n_part, team_size, participants):
@@ -34,12 +51,13 @@ def init_teams(n_part, team_size, participants):
     for i in range(1, n_part+1):
         # if we have less/equal participants that current names in "players", add the name
         if(n_part<=len(players)):
-            players_dict[i]=[players[i], 0, 0]
+            players_dict[i]=[players[i], 0, []]
         else:
             # if we have less/equal participants that current names in "players", add the name
-            players_dict[i]=["playerX"+i, 0, 0]
+            players_dict[i]=["playerX"+str(i), 0, []]
 
 def print_names(games):
+    print(players_dict)
     for i in range(0,len(games)):
         print("Game "+str(i)+" :")
         for j in range(0, len(games[i])):
@@ -50,6 +68,7 @@ def print_names(games):
 
 def shuffle_teams(n_part, team_size, participants):
   random.shuffle(participants)
+  print(participants)
   round1=split_array(participants, team_size)
   print_names(round1)
 
