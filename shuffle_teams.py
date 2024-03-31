@@ -19,9 +19,9 @@ players_dict = {}
 def split_array(array, team_size):
     game = []
 
-    for i in range(0, int(len(array)/(2*team_size))):
+    for i in range(0, int(len(array)/(2*team_size))): # number of participants divided by team_size*2
         team = []
-        for j in range(0,team_size):
+        for j in range(0,2): # run it twice per iteration to set 2 teams
             team.append(array[(i*team_size*2)+(j*team_size):(i*team_size*2)+(j*team_size)+team_size])
 
         #add the player index to the list of players each player has played with
@@ -34,12 +34,13 @@ def split_array(array, team_size):
     for g in game:
         for team in g: # should always be 2?
             print("Team     :", team)
-            for k in range(team_size): # go player by player
-                for l in range(k+1, team_size): #but start in the next one
-                    print("Team member: ", team[k])
-                    print("Team member: ", team[l])
-                    players_dict[team[k]][2].append(team[l])
-                    players_dict[team[l]][2].append(team[k])
+            if len(team):
+                for k in range(team_size-1): # go player by player
+                    for l in range(k+1, team_size): #but start in the next one
+                        print("Team member: ", team[k])
+                        print("Team member: ", team[l])
+                        players_dict[team[k]][2].append(team[l])
+                        players_dict[team[l]][2].append(team[k])
 
     return game
 
