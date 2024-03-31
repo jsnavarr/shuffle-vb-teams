@@ -33,14 +33,23 @@ def split_array(array, team_size):
     # go team by team
     for g in game:
         for team in g: # should always be 2?
-            print("Team     :", team)
+            #print("Team     :", team)
             if len(team):
                 for k in range(team_size-1): # go player by player
                     for l in range(k+1, team_size): #but start in the next one
-                        print("Team member: ", team[k])
-                        print("Team member: ", team[l])
+                        #print("Team member: ", team[k])
+                        #print("Team member: ", team[l])
                         players_dict[team[k]][2].append(team[l])
                         players_dict[team[l]][2].append(team[k])
+    
+    # increase the counter for those who were not included in this game
+    # that is the second element of players_dict
+    # we could just take the last elements in array argument who were not added to a game
+    # len(array)-len(game*2*team_size) -> is the starting element?
+    print("len(game):   ", len(game))
+    for i in range(len(game)*2*team_size, len(array)):
+        print("i:  ", i)
+        players_dict[array[i]][1]=players_dict[array[i]][1]+1
 
     return game
 
