@@ -46,9 +46,10 @@ def split_array(array, team_size):
     # that is the second element of players_dict
     # we could just take the last elements in array argument who were not added to a game
     # len(array)-len(game*2*team_size) -> is the starting element?
-    print("len(game):   ", len(game))
+    
+    #print("len(game):   ", len(game))
     for i in range(len(game)*2*team_size, len(array)):
-        print("i:  ", i)
+        #print("i:  ", i)
         players_dict[array[i]][1]=players_dict[array[i]][1]+1
 
     return game
@@ -75,22 +76,58 @@ def print_names(games):
             for k in range(0, len(games[i][j])):
                 print("          "+players_dict[games[i][j][k]][0])
 
+def order_teams(n_part, team_size, participants, game_number):
+    # game_number would help to sort the participants, this function is called starting game 2
+    # at game N, people might have sat no more than N-1 (i.e. game 2 players would have sat 1 time)
+    # create 2 lists, one with those who has sat more and the rest
+    
+    unlucky_players=[] #those who has sat more (game number -1 times)
+    lucky_players=[] #thos who has sat less
 
-def shuffle_teams(n_part, team_size, participants):
-  random.shuffle(participants)
-  print(participants)
-  round1=split_array(participants, team_size)
-  print_names(round1)
+    #check if somebody has sat (n_part%(team_size*2))     
+    if(n_part%(team_size*2)):
+        # they have sat the game_number (i.e. in game 2 they have sat once)
+        # loop one by one in the participants list to separate the 2 groups
+        for i in range(len(participants)):
+            if players[participants[i]][1]==game_number-1:
+                #those who has sat more
+                unlucky_players.append(participants[i])
+            else:
+                #those who has sat less
+                lucky_players.append(participants[i])
+        random.shuffle(unlucky_players)
+        random.shuffle(lucky_players)
+
+        return unlucky_players+lucky_players
+    else:
+        return random.shuffle(participants)
+
+
+
+def shuffle_teams(n_part, team_size, participants, n_games):
+  for i in range(n_games):
+    if i==0:
+        random.shuffle(participants) #shuffle the participants
+    else:
+        # only shuffle the people who has not sat or who has sat less
+        # try to pair people who they have not played with
+        participants = order_teams(n_part, team_size, participants, i)
+    print(participants)
+    #split the array to create the teams after it was shuffled
+    game=split_array(participants, team_size)
+    print_names(game)
+    
 
 
 if __name__ == "__main__":
-    #arguments would be number of participants and team size
+    #arguments would be number of participants, team size, number of games
     if len(sys.argv)>=1 and sys.argv[1]:
         n_part = int(sys.argv[1])
         team_size = int(sys.argv[2])
         participants=list(range(1, n_part+1))
+        n_games=int(sys.argv[3])
         init_teams(n_part, team_size, participants)
-        shuffle_teams(n_part, team_size, participants)
+        shuffle_teams(n_part, team_size, participants, n_games)
         
     else:
         print('Please add number of players and team size')
