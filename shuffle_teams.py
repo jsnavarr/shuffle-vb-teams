@@ -11,8 +11,11 @@
 import sys
 import random
 
-players = ["Chevy", "Rebekah", "VJ", "Andrei", "Luke", "Danika", "Greg", "RV", 
-           "Salvador", "Benji", "Jet", "Eric", "Nat", "Olivia", "Vanessa", "Eddy", "Sameep", "Bri"]
+#players = ["Chevy", "Rebekah", "VJ", "Andrei", "Luke", "Danika", "Greg", "RV", 
+#           "Salvador", "Benji", "Jet", "Eric", "Nat", "Olivia", "Vanessa", "Eddy", "Sameep", "Bri"]
+
+players = ["Chevy", "Rebekah", "VJ", "Luke", "RV", "Salvador"]
+
 
 players_dict = {}
 
@@ -62,13 +65,13 @@ def init_teams(n_part, team_size, participants):
     for i in range(1, n_part+1):
         # if we have less/equal participants that current names in "players", add the name
         if(n_part<=len(players)):
-            players_dict[i]=[players[i], 0, []]
+            players_dict[i]=[players[i-1], 0, []]
         else:
             # if we have less/equal participants that current names in "players", add the name
             players_dict[i]=["playerX"+str(i), 0, []]
 
 def print_names(games):
-    print(players_dict)
+    #print(players_dict)
     for i in range(0,len(games)):
         print("Game "+str(i)+" :")
         for j in range(0, len(games[i])):
@@ -85,11 +88,13 @@ def order_teams(n_part, team_size, participants, game_number):
     lucky_players=[] #thos who has sat less
 
     #check if somebody has sat (n_part%(team_size*2))     
-    if(n_part%(team_size*2)):
+    if(n_part%(team_size*2)>0):
         # they have sat the game_number (i.e. in game 2 they have sat once)
         # loop one by one in the participants list to separate the 2 groups
         for i in range(len(participants)):
-            if players[participants[i]][1]==game_number-1:
+            #print("i: ", i)
+            #print("participants[i] : ", participants[i])
+            if players_dict[participants[i]][1]==game_number-1:
                 #those who has sat more
                 unlucky_players.append(participants[i])
             else:
@@ -100,7 +105,10 @@ def order_teams(n_part, team_size, participants, game_number):
 
         return unlucky_players+lucky_players
     else:
-        return random.shuffle(participants)
+        #print("no mix, just shuffle the participants")
+        #print("participants before shuffle: ", participants)
+        random.shuffle(participants)
+        return participants
 
 
 
@@ -112,7 +120,7 @@ def shuffle_teams(n_part, team_size, participants, n_games):
         # only shuffle the people who has not sat or who has sat less
         # try to pair people who they have not played with
         participants = order_teams(n_part, team_size, participants, i)
-    print(participants)
+    #print("after calling order_teams: ", participants)
     #split the array to create the teams after it was shuffled
     game=split_array(participants, team_size)
     print_names(game)
