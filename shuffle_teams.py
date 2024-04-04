@@ -70,12 +70,13 @@ def init_teams(n_part, team_size, participants):
             # if we have less/equal participants that current names in "players", add the name
             players_dict[i]=["playerX"+str(i), 0, []]
 
-def print_names(games):
+def print_names(games, game_number):
     #print(players_dict)
     for i in range(0,len(games)):
-        print("Game "+str(i)+" :")
+        print("Game "+str(game_number+1)+" :")
         for j in range(0, len(games[i])):
-            print("    Team "+str(j)+" :")
+            
+            print("    Team "+str(j+1)+" :")
             for k in range(0, len(games[i][j])):
                 print("          "+players_dict[games[i][j][k]][0])
 
@@ -123,7 +124,7 @@ def shuffle_teams(n_part, team_size, participants, n_games):
     #print("after calling order_teams: ", participants)
     #split the array to create the teams after it was shuffled
     game=split_array(participants, team_size)
-    print_names(game)
+    print_names(game, i)
     
 
 
