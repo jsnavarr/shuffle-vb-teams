@@ -90,17 +90,22 @@ def order_teams(n_part, team_size, participants, game_number):
 
     #check if somebody has sat (n_part%(team_size*2))     
     if(n_part%(team_size*2)>0):
-        # they have sat the game_number (i.e. in game 2 they have sat once)
-        # loop one by one in the participants list to separate the 2 groups
+        # add first the ones who has sat more times
+        # on game 2 they have only sat once, on game 3 it could be that they have sat once still or more times
+        # loop from game number to 1 to search for those who had sat more first
+        
         for i in range(len(participants)):
             #print("i: ", i)
             #print("participants[i] : ", participants[i])
-            if players_dict[participants[i]][1]==game_number-1:
+            if players_dict[participants[i]][1]==game_number:
                 #those who has sat more
                 unlucky_players.append(participants[i])
             else:
                 #those who has sat less
                 lucky_players.append(participants[i])
+        print("players: ", players_dict)
+        print("unlucky players: ", unlucky_players)
+        print("lucky players: ", lucky_players)
         random.shuffle(unlucky_players)
         random.shuffle(lucky_players)
 
