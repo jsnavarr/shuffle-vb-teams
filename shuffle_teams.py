@@ -90,19 +90,32 @@ def order_teams(n_part, team_size, participants, game_number):
 
     #check if somebody has sat (n_part%(team_size*2))     
     if(n_part%(team_size*2)>0):
-        # add first the ones who has sat more times
+        remaining_participants=[]
+        # add first the ones who sat the last game then those who has sat more times
         # on game 2 they have only sat once, on game 3 it could be that they have sat once still or more times
         # loop from game number to 1 to search for those who had sat more first
         
-        for i in range(len(participants)):
-            #print("i: ", i)
-            #print("participants[i] : ", participants[i])
-            if players_dict[participants[i]][1]==game_number:
+        #add the ones who sat the last game
+        #team.append(array[(i*team_size*2)+(j*team_size):(i*team_size*2)+(j*team_size)+team_size])
+        #unlucky_players.append(participants[(len(participants)-(n_part%(team_size*2))):len(participants)])
+        unlucky_players=participants[(len(participants)-(n_part%(team_size*2))):len(participants)]
+
+        #remove those who sat the last game from participants in a new variable
+        #remaining_participants.append(participants[0:(len(participants)-(n_part%(team_size*2)))]) 
+        remaining_participants=participants[0:(len(participants)-(n_part%(team_size*2)))]
+
+        print("the last who sat: ", unlucky_players)
+        print("remaining players: ", remaining_participants)
+
+        for i in range(len(remaining_participants)):
+            print("i: ", i)
+            print("participants[i] : ", participants[i])
+            if players_dict[remaining_participants[i]][1]==game_number:
                 #those who has sat more
-                unlucky_players.append(participants[i])
+                unlucky_players.append(remaining_participants[i])
             else:
                 #those who has sat less
-                lucky_players.append(participants[i])
+                lucky_players.append(remaining_participants[i])
         print("players: ", players_dict)
         print("unlucky players: ", unlucky_players)
         print("lucky players: ", lucky_players)
